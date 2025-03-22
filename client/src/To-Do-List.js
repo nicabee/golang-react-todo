@@ -30,7 +30,6 @@ class ToDoList extends Component {
 
         let {task} = this.state;
         if (task.trim()) {
-            console.log(task, "task123")
             axios.post(endpoint + "/api/tasks", 
                 {task: task.trim() },
                 {headers: {
@@ -41,7 +40,6 @@ class ToDoList extends Component {
                 this.setState({
                     task: "",
                 })
-                // console.log(res)
             })
         }
     }
@@ -70,10 +68,15 @@ class ToDoList extends Component {
                                         </div>
                                     </Card.Header>
                                     <Card.Meta textAlign="right">
-                                        <Icon 
+                                    <Icon 
                                         name="check circle"
+                                        color="green"
+                                        onClick={() => this.completeTask(item._id)}/> 
+                                        <span style={{paddingRight: 10}}>Done</span>
+                                        <Icon 
+                                        name="undo"
                                         color="blue"
-                                        onClick={() => this.updateTask(item._id)}/> 
+                                        onClick={() => this.undoTask(item._id)}/> 
                                         <span style={{paddingRight: 10}}>Undo</span>
                                         <Icon
                                         name="delete"
@@ -94,12 +97,18 @@ class ToDoList extends Component {
         })
     }
 
-    updateTask = (id) => {
-        axios.put(endpoint + "/api/tasks" + id, {
+    completeTask = (id) => {
+        
+        axios.put(endpoint + "/api/completeTask/" + id, {
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "application/x-www-form-urlencoded",
             }
         }).then((res)=>  {
+            this.setState((prevState) => ({
+                items: prevState.items.map(item => 
+                    item._id === id ? { ...item, status: true } : item
+                )
+            }));
             console.log(res)
             this.getTask();
         })
@@ -111,6 +120,11 @@ class ToDoList extends Component {
                 "Content-Type": "application/json",
             }
         }).then((res)=>  {
+            this.setState((prevState) => ({
+                items: prevState.items.map(item => 
+                    item._id === id ? { ...item, completed: false } : item
+                )
+            }));
             console.log(res)
             this.getTask();
         })
