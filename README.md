@@ -1,8 +1,6 @@
 ## To DO
 
-- Refactor if found anything worth refactoring
-- Update this readme
-- Blog posts
+- Implement Delete All Tasks
 
 ## Development
 
