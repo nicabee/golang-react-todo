@@ -64,7 +64,7 @@ const ToDoList = () => {
 
     return (
         <div>
-            <Header as="h2" color="yellow">TO DO LIST</Header>
+            <Header as="h2" color="yellow" data-testid="cypress-title">TO DO LIST</Header>
             <Form onSubmit={onSubmit}>
                 <Input
                     type="text"
@@ -81,7 +81,7 @@ const ToDoList = () => {
                     let style = item.status ? { textDecoration: "line-through" } : {};
 
                     return (
-                        <Card key={item._id} color={color} fluid>
+                        <Card key={item._id} color={color} fluid data-testid={item._id}>
                             <Card.Content>
                                 <Card.Header textAlign="left">
                                     <div style={style}>{item.task}</div>
