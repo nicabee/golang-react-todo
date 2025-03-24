@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, Header, Form, Input, Icon } from "semantic-ui-react";
+import { Card, Header, Form, Input, Icon, Modal, Button } from "semantic-ui-react";
 
 const endpoint = "http://localhost:9000";
 
 const ToDoList = () => {
     const [task, setTask] = useState("");
     const [items, setItems] = useState([]);
+    const [isDuplicate, setIsDuplicate] = useState(false);
 
     useEffect(() => {
         getTask();
@@ -28,14 +29,16 @@ const ToDoList = () => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        if (task.trim()) {
+        setIsDuplicate(false)
+        if (task.trim()&& !items.some(t => t.task === task.trim())) {
             axios.post(`${endpoint}/api/tasks`, { task: task.trim() }, {
                 headers: { "Content-Type": "application/json" },
             }).then(() => {
                 getTask();
                 setTask("");
             });
-        }
+        } else setIsDuplicate(true);
+        
     };
 
     const completeTask = (id) => {
@@ -75,6 +78,18 @@ const ToDoList = () => {
                     placeholder="Create Task"
                 />
             </Form>
+            {/* Warning Modal */}
+            <Modal open={isDuplicate} onClose={() => setIsDuplicate(false)} closeOnDocumentClick={false} size="tiny">
+                <Modal.Header>
+                <Icon name="warning circle" color="red" /> Duplicate Task
+                </Modal.Header>
+                <Modal.Content>
+                <p>A task with this name already exists. Please enter a different task.</p>
+                </Modal.Content>
+                <Modal.Actions>
+                <Button color="red" onClick={() => setIsDuplicate(false)}>Close</Button>
+                </Modal.Actions>
+            </Modal>
             <Card.Group style={{ marginTop: 10 }}>
                 {items.map((item) => {
                     let color = item.status ? "green" : "yellow";
