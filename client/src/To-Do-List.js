@@ -87,11 +87,11 @@ const ToDoList = () => {
                                     <div style={style}>{item.task}</div>
                                 </Card.Header>
                                 <Card.Meta textAlign="right">
-                                    <Icon name="check circle" color="green" onClick={() => completeTask(item._id)} />
+                                    <Icon name="check circle" color="green" data-testid="complete-task" onClick={() => completeTask(item._id)} />
                                     <span style={{ paddingRight: 10 }}>Done</span>
-                                    <Icon name="undo" color="blue" onClick={() => undoTask(item._id)} />
+                                    <Icon name="undo" color="blue" data-testid="undo-task"  onClick={() => undoTask(item._id)} />
                                     <span style={{ paddingRight: 10 }}>Undo</span>
-                                    <Icon name="delete" color="red" onClick={() => deleteTask(item._id)} />
+                                    <Icon name="delete" color="red" data-testid="delete-task"  onClick={() => deleteTask(item._id)} />
                                     <span style={{ paddingRight: 10 }}>Delete</span>
                                 </Card.Meta>
                             </Card.Content>
